@@ -3,23 +3,17 @@
 const container = document.querySelector('.container');
 const date_display = document.querySelector('#current-day');
 const save_buttons = document.getElementsByClassName('saveBtn');
-for (var i = 0; i < save_buttons.len; i++) {
+for (var i = 0; i < save_buttons.length; i++) {
     save_buttons[i].addEventListener('click', saveEvent);
 }
+console.log(save_buttons.length);
 
 
 function setTime(event) {
-    // Sets interval in variable
-    var timerInterval = setInterval(function() {
+    setInterval(function() {
         date_display.textContent = moment().format('dddd MMM Do, YYYY, HH:mm');
     }, 1000);
 }
-
-// function genDay() {
-
-// }
-
-// genDay();
 
 function saveEvent(event) {
     var selection = event.target;
