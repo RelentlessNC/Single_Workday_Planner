@@ -1,59 +1,69 @@
+/* author: Nicholas Conklin */
 "use strict";
 
 const container = document.querySelector('.container');
-const date_display = document.querySelector('#current-day');
-const save_buttons = document.getElementsByClassName('saveBtn');
-const all_rows = document.querySelectorAll('.row');
+const dateDisplay = document.querySelector('#current-day');
+const saveButtons = document.getElementsByClassName('saveBtn');
+const allMemos = document.querySelectorAll('.memo');
+const allHours = document.querySelectorAll('.hour');
 //console.log(all_rows);
-var activity_array = [];
+var activityArray = [];
 var todays_date = moment().format('dddd MMM Do, YYYY, HH:mm');
-for (var i = 0; i < save_buttons.length; i++) {
-    save_buttons[i].addEventListener('click', saveEvent);
+for (var i = 0; i < saveButtons.length; i++) {
+    saveButtons[i].addEventListener('click', saveEvent);
 }
 
 
 function setTime(event) {
     setInterval(function() {
-        date_display.textContent = todays_date;
+        dateDisplay.textContent = todays_date;
     }, 1000);
 }
 
 function saveEvent(event) {
+    localStorage.clear();
     const button = $(this);
     /*
     referring to the button, then its siblings, filtering for
     an element type of input, and asking for the value 
     */
     var text = button.siblings("input").val();
+    var hour = button.siblings(0).text().trim();
+
     var activity = {
-            saveid: button.attr('id'),
-            memoid: (button.prev().attr('id')),
-            memo: button.siblings("input").val(),
-            hour: button.siblings(0).text().trim(),
-            date: todays_date
-        }
-        // var myFind = activity_array.find(object => {
-        //     return object.memoid === activity.memoid;
-        // })
-        // //edit myFind with new content
-        // console.log(myFind);
-        // console.log(activity_array);
-    array_length = activity_array.length;
-    if (length != 0) {
-        for (var i = 0; i < array_length; i++) {
-            if (activity_array[i].memoid === activity.memoid) {
-                activity_array[i] = activity;
-            } else {
-                activity_array.push(activity);
-            }
-        }
-    } else {
-        activity_array.push(activity);
+        memoid: (button.prev().attr('id')),
+        memo: button.siblings("input").val(),
+        hour: button.siblings(0).text().trim(),
+        date: todays_date
     }
-    console.log('activity ', activity);
-    console.log('activity array: ', activity_array);
+
+    if (activityArray.includes(arr => arr.includes(activity.memoid))) {
+        console.log('array includes memoid ' + memoid);
+        var location = activityArray.findIndex(arr => arr.includes(memoid));
+        console.log(location);
+        activityArray[loc] = activity;
+        console.log('activity edited.');
+    } else {
+        console.log('activityArray does not include memoid ' + activity.memoid);
+        activityArray.push(activity);
+        console.log('activity pushed.');
+    }
+
+    localStorage.setItem('activities', activityArray);
+    console.log(activityArray);
+    //console.log(JSON.stringifty(localStorage));
+
 
 }
+
+// for (var i = 0; i < allHours.length; i++) {
+//     localStorage.setItem('memo' + [i].toString(), ('memo' + [i].toString()).value());
+// }
+
+//     console.log('activity ', activity);
+//     console.log('activity array: ', activity_array);
+
+// }
 
 
 //console.log(activity_loc);
@@ -64,17 +74,18 @@ function saveEvent(event) {
 
 
 function parse_array() {
-    var activity = JSON.parse(localStorage.getItems("activity_array"));
-    console.log(activity.memoid);
+
 
 }
 
 function init() {
-    if (activity_array) {
-        activity_array.forEach(parse_array); {
-            //JSON.parse(localStorage.getItems("activity_array"));
-        }
-    }
+    //activityArray = {...localStorage };
+    console.log(activityArray);
+
+    // if (storedTodos !== null) {
+    //     todos = storedTodos;
+    // }
+    // renderTodos();
 }
 
 function onLoad() {
@@ -89,17 +100,17 @@ onLoad();
 
 
 /*  Function to display the date using pure JS, no API  */
-/*
-function setTime(event) {
-    const weekdays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-    const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-    // Sets interval in variable
-    var timerInterval = setInterval(function() {
-        const today = new Date();
-        date_display.textContent = (today.getDate() + '/' + months[(today.getMonth())] + '/' + today.getFullYear() + '/' + today.getHours() + ':' + today.getMinutes() + '-' + weekdays[today.getDay()]);
-    }, 1000);
-}
-*/
+
+// function setTime(event) {
+//     const weekdays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+//     const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+//     // Sets interval in variable
+//     var timerInterval = setInterval(function() {
+//         const today = new Date();
+//         date_display.textContent = (today.getDate() + '/' + months[(today.getMonth())] + '/' + today.getFullYear() + '/' + today.getHours() + ':' + today.getMinutes() + '-' + weekdays[today.getDay()]);
+//     }, 1000);
+// }
+
 
 
 // if ($ === undefined) {
