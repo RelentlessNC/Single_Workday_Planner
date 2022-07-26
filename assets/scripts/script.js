@@ -6,22 +6,46 @@ const dateDisplay = document.querySelector('#current-day');
 const saveButtons = document.getElementsByClassName('saveBtn');
 const allMemos = document.querySelectorAll('.memo');
 const allHours = document.querySelectorAll('.hour');
-//console.log(all_rows);
+const clear = document.getElementById('btn-clear');
 var activityArray = [];
-var todays_date = moment().format('dddd MMM Do, YYYY, HH:mm');
+var todaysDate = moment().format('dddd MMM Do, YYYY, HH:mm');
+
+
+//  add the same event listener to all the save buttons
 for (var i = 0; i < saveButtons.length; i++) {
     saveButtons[i].addEventListener('click', saveEvent);
 }
 
+/*  I am still working on the extra functionality of the clearAll function to delete all the events saved in the schedule */
+
+// clear.addEventListener('click', clearAll);
+// function clearAll() {
+//     for (var i = 0; i < allMemos.length; i++) {
+//         allMemos[i].textContent = '';
+//     }
+// }
 
 function setTime(event) {
+
     setInterval(function() {
-        dateDisplay.textContent = todays_date;
+        dateDisplay.textContent = todaysDate;
+        for (var i = 0; i < allHours.length; i++) {
+            //  every time the interval is ran, check all hours to see if they are in the 
+            //  past present or future and change the class appropriately
+            if (allHours[i].id > moment().hours()) {
+                allHours[i].nextElementSibling.setAttribute('class', 'future col-lg-10 description memo');
+            } else if (allHours[i].id < moment().format('HH')) {
+                allHours[i].nextElementSibling.setAttribute('class', 'past col-lg-10 description memo');
+            } else {
+                allHours[i].nextElementSibling.setAttribute('class', 'present col-lg-10 description memo');
+            }
+        }
     }, 1000);
 }
 
+
+
 function saveEvent(event) {
-    localStorage.clear();
     const button = $(this);
     /*
     referring to the button, then its siblings, filtering for
@@ -30,73 +54,52 @@ function saveEvent(event) {
     var text = button.siblings("input").val();
     var hour = button.siblings(0).text().trim();
 
+    // create the individual activity object
     var activity = {
         memoid: (button.prev().attr('id')),
         memo: button.siblings("input").val(),
         hour: button.siblings(0).text().trim(),
-        date: todays_date
+        date: todaysDate
     }
 
-    if (activityArray.includes(arr => arr.includes(activity.memoid))) {
-        console.log('array includes memoid ' + memoid);
-        var location = activityArray.findIndex(arr => arr.includes(memoid));
-        console.log(location);
-        activityArray[loc] = activity;
-        console.log('activity edited.');
+    //  search the array to see if the current object matches any objects in the array.
+    //  if there is a match, replace the memo in the array
+    //  if no match, then add the current activity to the array
+    if (activityArray.find(obj => obj.memoid === activity.memoid)) {
+        var location = activityArray.findIndex(obj => obj.memoid === activity.memoid);
+        activityArray[location] = activity;
     } else {
-        console.log('activityArray does not include memoid ' + activity.memoid);
         activityArray.push(activity);
-        console.log('activity pushed.');
     }
 
-    localStorage.setItem('activities', activityArray);
-    console.log(activityArray);
-    //console.log(JSON.stringifty(localStorage));
-
-
+    // save the activityArray variable to the local storage
+    localStorage.setItem('activities', JSON.stringify(activityArray));
 }
 
-// for (var i = 0; i < allHours.length; i++) {
-//     localStorage.setItem('memo' + [i].toString(), ('memo' + [i].toString()).value());
-// }
 
-//     console.log('activity ', activity);
-//     console.log('activity array: ', activity_array);
-
-// }
-
-
-//console.log(activity_loc);
-
-//localStorage.setItem("activity", JSON.stringify(activity));
-
-//console.log(activity_array);
-
-
-function parse_array() {
-
-
-}
-
+/* init runs when the page loads.  
+I parse everything from the key 'activities' in local storage 
+and save it into my activityArray.
+Then I run through the array and get the activity id and set the value 
+to each corresponding memo  */
 function init() {
-    //activityArray = {...localStorage };
-    console.log(activityArray);
-
-    // if (storedTodos !== null) {
-    //     todos = storedTodos;
-    // }
-    // renderTodos();
+    if (localStorage.length > 0) {
+        activityArray = JSON.parse(localStorage.getItem("activities"));
+        if (activityArray.length > 0) {
+            for (var i = 0; i < activityArray.length; i++) {
+                var insert = document.getElementById(activityArray[i].memoid);
+                insert.setAttribute('value', activityArray[i].memo);
+            }
+        }
+    }
 }
+
 
 function onLoad() {
     init();
     setTime();
 }
 onLoad();
-
-
-//var storedTodos = JSON.parse(localStorage.getItem("todos"));
-
 
 
 /*  Function to display the date using pure JS, no API  */
@@ -110,66 +113,3 @@ onLoad();
 //         date_display.textContent = (today.getDate() + '/' + months[(today.getMonth())] + '/' + today.getFullYear() + '/' + today.getHours() + ':' + today.getMinutes() + '-' + weekdays[today.getDay()]);
 //     }, 1000);
 // }
-
-
-
-// if ($ === undefined) {
-//     console.log('JQuery not loaded');
-// } else {
-//     console.log('JQuery loaded');
-// }
-
-
-
-
-/*   BCS CODE HELP  */
-/*
-<div class="col-lg-1 saveBtn" id="9AM">
-    <i class="material-symbols-outlined"> save </i>
-</div>
-
-
-$("#9AM").click(function () {
-  // this refers to the button itself
-  const button = $(this);
-
-  console.log(button);
-});
-
-
-
-$("#9AM").click(function () {
-  // this refers to the button itself
-  const button = $(this);
-
-  /*
-  referring to the button, then its siblings, filtering for
-  an element type of input, and asking for the value
-  */
-/*
-  const text = button.siblings("input").val();
-
-  console.log(text);
-});
-*/
-
-
-/*
-$(".row").each(function (index) {
-  const baseNumber = 9;
-
-  $("#" + (baseNumber + index) + "AM").click(function () {
-    // this refers to the button itself
-    const button = $(this);
-
-    /*
-      referring to the button, then its siblings, filtering for
-      an element type of input, and asking for the value
-      */
-/*
-      const text = button.siblings("input").val();
-
-      console.log(text);
-    });
-  });
-  */
