@@ -4,6 +4,9 @@ Create a simple calendar application that allows a user to save events for each 
 The starter code uses the Moment.js (Links to an external site.) library to work with date and time, but feel free to use a different JavaScript solution to handle this functionality since Moment.js is considered a "legacy" project. Learn more about some alternative solutions in the Moment.js project status page. (Links to an external site.)
 
 [GIF showing demo](assets/images/05-third-party-apis-homework-demo.gif).
+[Live site](https://relentlessnc.github.io/challenge_5_solution/)
+[GIT Repository](https://github.com/RelentlessNC/challenge_5_solution.git)
+[Screen shot of project](assets/images/sitescreenshot.png)
 
 ### User Story
 AS AN employee with a busy schedule
