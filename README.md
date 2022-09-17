@@ -2,10 +2,11 @@
 
 Create a simple calendar application that allows a user to save events for each hour of the day. This app will run in the browser and feature dynamically updated HTML and CSS powered by jQuery.
 
-[GIF showing demo](assets/images/05-third-party-apis-homework-demo.gif).
-[Live site](https://relentlessnc.github.io/workdayScheduler/).
-[GIT Repository](https://github.com/RelentlessNC/workdayScheduler.git).
-[Screen shot of project](assets/images/sitescreenshot.png).
+[Live site](https://relentlessnc.github.io/workdayScheduler/)
+
+[GIT Repository](https://github.com/RelentlessNC/workdayScheduler.git)
+
+![Screen shot of project](assets/images/sitescreenshot.png)
 
 ## User Story
 
