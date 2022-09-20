@@ -15,4 +15,6 @@ This simple planner allows you to make a schedule for a single workday and focus
 - [google fonts](https://fonts.google.com/icons)
 - [font awesome](https://fontawesome.com/)
 
+## Sample Image
+
 ![Sample Image](./assets/images/sitescreenshot.png)
